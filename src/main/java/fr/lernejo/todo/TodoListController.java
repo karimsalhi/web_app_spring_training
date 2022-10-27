@@ -10,15 +10,18 @@ import java.util.Collection;
 @RequestMapping("/api/todo")
 public class TodoListController {
 
-    private final List<Todo> todos = new ArrayList<>();
+    private final TodoRepository todoRepository;
 
-    @PostMapping
-    void addTodo(@RequestBody Todo todo) {
-        todos.add(todo);
+    TodoListController(TodoRepository todoRepository_) {
+        todoRepository = todoRepository_;
     }
 
     @GetMapping
-    Collection<Todo> getTodos() {
-        return todos;
+    public Iterable<TodoEntity> getTodo() {
+        return todoRepository.findAll();
+    }
+    @PostMapping
+    void addTodo(@RequestBody TodoEntity todo) {
+        todoRepository.save(todo);
     }
 }
